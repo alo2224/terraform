@@ -56,3 +56,29 @@ resource "aws_route_table_association" "tf_public_assoc"{
     subnet_id = "${aws_subnet.tf_public_subnet.*.id[count.index]"
     route_table_id = "${aws_route_table.tf_public_rt.id}"
 }
+
+resource "aws_security_group" "tf_public_sg"{
+    name = "tf_public_sg"
+    description = "Used for access to the public instances"
+    vpc_id = "${aws_vc.tf_vpc.id}"
+    
+    #SSH
+    ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["${var.accessip}"]
+    }
+    ingress {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["${var.accessip}"]
+    }
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+}

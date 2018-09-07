@@ -9,3 +9,6 @@ variable "public_cidrs" {
     "10.123.2.0/24"
     ]
 }
+variable "accessip" {
+    default = "0.0.0.0/0"
+}
